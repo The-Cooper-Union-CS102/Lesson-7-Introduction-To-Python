@@ -92,6 +92,13 @@ you create a string, you cannot change it.
 {"code": "snippets/string.py"}
 ```
 
+Formatting strings is way easier in Python.  Here are some different
+ways you can format a string
+
+```snippet
+{"code": "snippets/format.py"}
+```
+
 ### Tuple
 
 A tuple is similar to an array in C, with they key exception that it is
@@ -335,7 +342,7 @@ Python has an additional, very minor, control flow feature
 which is uncommon to other languages.  You can actually attach
 an `else` at the end of a `for` loop.  According to the Python
 developers, they wished they had called it `ifnobreak` because
-that is exactly how it works.  The code inside the `else` for
+that is exactly how it works.  The code inside the `else` on
 a `for` loop will trigger if the for loop did not exit via
 `break`.  We could use this to detect if we did not find a
 solution in the last problem.  For example:
@@ -394,6 +401,87 @@ will not make a difference, but it is technically possible
 for a custom class to implement custom behavior when comparing
 to the `None` value.
 
+#### Varadic Functions
+
+In programming, a **varadic function** is a function which
+may take any number of sequential inputs.  For example, let's
+say we want to write a function which sums all of its inputs.
+This can be done like this:
+
+```snippet
+{"code": "snippets/varadic_1.py"}
+```
+
+You do not have to use the name `args`, you can make that any name you want.
+The way this works is that all of the values you feed are put into a list
+with the name `args` and you can use that however you want.
+
+This could also be used to ignore or collect extra inputs.
+
+```snippet
+{"code": "snippets/varadic_2.py"}
+```
+
+This can be useful if you are trying to make multiple functions
+that have a compatible interface (meaning they can take the same
+number of inputs)
+
+You can also use lists to supply the arguments to a function.
+
+```snippet
+{"code": "snippets/varadic_3.py"}
+```
+
+This can be useful for programatically grouping and supplying arguments.
+
+#### Keyword Arugments to Functions
+
+Sometimes functions can take a lot of arguments and it can get
+confusing at a first glance as to what argument corresponds
+to what parameter.  **Keyword Arguments** allow the programmer
+to specify an argument by name rather than by position.  For
+example:
+
+```snippet
+{"code": "snippets/kwargs_1.py"}
+```
+
+In case you want to force yourself or another programmer to use
+keyword arguments with your function (to avoid common mistakes)
+you can place a `*` before the arguments.
+
+```snippet
+{"code": "snippets/kwargs_2.py"}
+```
+
+You can automatically gather extra keyword arugments similar to
+how you can gather extra positional arguments with `*args` by
+using `**kwargs`.  Note again there is nothing special about
+the name `kwargs` but it is very commonly used for this case.
+
+```snippet
+{"code": "snippets/kwargs_3.py"}
+```
+
+Similar to how you can use `*args` when supplying an input
+to a function, you can also use `**kwargs` if you want to
+supply a dictionary as the input to a function.
+
+```snippet
+{"code": "snippets/kwargs_4.py"}
+```
+
+Combining keyword arugments along with varadic functions, we
+can create a function that takes any input at all.
+
+```snippet
+{"code": "snippets/kwargs_5.py"}
+```
+
+We will see later on this pattern is very useful when trying
+to modify or extend existing functions, because you can feed
+anything into this function that you can into any other function.
+
 ### Recursion
 
 Recursion works similarly to C.  Here is a simple Fibonacci
@@ -420,6 +508,7 @@ a quick example of more meaningful code, here is the
 ```snippet
 {"code": "snippets/mandelbrot.py"}
 ```
+
 ## Advanced Functions
 
 All of that covered the basic control flow we had in C, but
@@ -428,5 +517,100 @@ we can do a lot more with functions.
 
 ### Functions as Arguments
 
-Similar to C, we can pass functions as arguments to other
-functions, but the syntax is a lot simpler in Python.
+Similar to C, we can pass functions as arguments to other functions, but the
+syntax is a lot simpler in Python.  Watch this:
+
+```snippet
+{"code": "snippets/functional_1.py"}
+```
+
+**Question: How can we write the above program as a comprehension?**
+
+### Lambdas
+
+In case we don't have a function readily defined, we can use **lambda** to 
+define one on the spot.
+
+```snippet
+{"code": "snippets/functional_1.py"}
+```
+
+There is basically no difference in doing this compared to defining a function
+beforehand, it's just convenient.
+
+```snippet
+{"code": "snippets/lambda_1.py"}
+```
+
+You will often see this in the context of some built in functions:
+
+```snippet
+{"code": "snippets/lambda_2.py"}
+```
+
+### Functions as Return Values
+
+We can also create or modify functions and then use or return them.
+For example, we can create a function that takes in any other function
+as a parameter and then returns a function which does the same thing,
+and also prints the time it took to run.
+
+```snippet
+{"code": "snippets/functional_2.py"}
+```
+
+This is fairly common for some Python programs, so there is even a
+special syntax for doing it:
+
+```snippet
+{"code": "snippets/functional_3.py"}
+```
+
+The `@` basically says to do something like `wait = timed(wait)`
+just after the definition.
+
+## Input and (File) Output
+
+You can get command line arguments and inputs by using `sys.argv`.
+Here is a simple program that echos the user input back to them
+separated by newlines.
+
+### Command Line Input
+
+```snippet
+{"code": "snippets/input_1.py"}
+```
+
+You can get interactive user input with the `input` function.
+
+```snippet
+{"code": "snippets/input_2.py"}
+```
+
+**Question: Write a program that prints the sum of user inputs**
+
+### File Input
+
+You can read files by using the `open` keyword.
+
+```snippet
+{"code": "snippets/input_3.py"}
+```
+
+It is generally good practice to close a file after you are done
+using it.  This is so other programs can get access to it.  It
+is a common mistake to forget to close it, so in Python you can
+using something called a **context manager** which will close it
+for you.
+
+```snippet
+{"code": "snippets/input_4.py"}
+```
+
+### File Output
+
+You can write to files in a similar way as you read from them.
+
+```snippet
+{"code": "snippets/output_1.py"}
+```
