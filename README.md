@@ -42,8 +42,11 @@ have it installed.  Now let's see what we can do.
 First, you can print to the screen with `print` (rather than `printf` as in C).
 Below is a simple *hello world* program written in Python.
 
-```snippet
-{"code": "snippets/output.py"}
+```python
+print('Hello, world')
+```
+```
+Hello, world
 ```
 
 ## Basic Types
@@ -57,8 +60,11 @@ Integers are mostly the same in Python, with one beautiful exception: they never
 oerflow!  For example, take a look at the result of this operation which would
 certainly overflow on any built in C integer:
 
-```snippet
-{"code": "snippets/bigint.py"}
+```python
+print(99999999999999**99)
+```
+```
+999999999999010000000000485099999999843151000000037643759999992847685600001120529255999851129684560017120086275598268969054356155792785107947394947386720524370524973834138280251750760077070249614262299352520961229283992691098805546237395498858449258839259192423512729632303161582885260972810897704383804273946418451779695030082461359353097523360920141070562702780630312564401226649149811282071692215918962327203736770314652100657366063652070169315601433509462464798923249120353677790956846435567057863700541236449924465090719080970157876897926927682137631629508275121669937275752256199910415892799682414285193258908697965193904268511742261304374373830694332631557059746356077893164791881199330009837311377700126063441924089765303940088294707422260075862517364457132402907102774904262625670503551849986724698785516808417616137889446203230753156540587562996837654939896050004692482809720434647211051496417785329401426740564518619624990501103555681289381672426740244832832474557304733501089853069369718250203785892821951883509025223446345369915911208705358160313111022956144424057114739080091357036769533255907408076168514501141549724390119445378661887707160067784737700647489963992292975017658617197482529475629475026105260505261328038442072148920401731030945643998287991372440001488703154399998879470744000000715231439999999623562400000000156848999999999951490000000000009899999999999999
 ```
 
 By the way, the `**` in that example is exponentiation.
@@ -70,8 +76,15 @@ really there is no such thing as a 32-bit float in Python.  Everything is a
 64-bit double.  That means they are still susceptible to underflow and overflow
 just as they were in C.
 
-```snippet
-{"code": "snippets/float.py"}
+```python
+print(1 / 2)
+print(1e-456)
+print(1e456)
+```
+```
+0.5
+0.0
+inf
 ```
 
 Note that the above code will run differently depending on whether you are
@@ -88,15 +101,52 @@ null terminator, and there are several built in methods that can help you.
 Also, unlike C strings, Python strings are **immutable**.  This means once
 you create a string, you cannot change it.
 
-```snippet
-{"code": "snippets/string.py"}
+```python
+string = 'Hello, world!'
+print(string.endswith('world!'))
+print(',' in string)
+print(string[0:5])
+print(string[-1])
+print(string.split())
+```
+```
+True
+True
+Hello
+!
+['Hello,', 'world!']
 ```
 
 Formatting strings is way easier in Python.  Here are some different
 ways you can format a string
 
-```snippet
-{"code": "snippets/format.py"}
+```python
+age = 23
+greeting = 'hi'
+gpa = 3.0
+
+str1 = greeting + ' I am ' + str(age) + ' years old and my gpa is ' + str(gpa)
+print(str1)
+
+str2 = '%s I am %s years old and my gpa is %s' % (greeting, age, gpa)
+print(str2)
+
+str3 = '{} I am {} years old and my gpa is {}'.format(greeting, age, gpa)
+print(str3)
+
+str4 = '{greeting} I am {age} years old and my gpa is {gpa}'.format(
+        greeting=greeting, age=age, gpa=gpa)
+print(str4)
+
+str5 = f'{greeting} I am {age} years old and my gpa is {gpa}'
+print(str5)
+```
+```
+hi I am 23 years old and my gpa is 3.0
+hi I am 23 years old and my gpa is 3.0
+hi I am 23 years old and my gpa is 3.0
+hi I am 23 years old and my gpa is 3.0
+hi I am 23 years old and my gpa is 3.0
 ```
 
 ### Tuple
@@ -105,30 +155,60 @@ A tuple is similar to an array in C, with they key exception that it is
 **immutable** (again meaning it can not be modified once created) and that
 it can store any number of different types.
 
-```snippet
-{"code": "snippets/tuple.py"}
+```python
+a = (1, '2', 3.0)
+print(a)
+print(a[1])
+```
+```
+(1, '2', 3.0)
+2
 ```
 
 Note in the above case, the parentheses are not necessary,
 the same program would work fine removing them.
 
-```snippet
-{"code": "snippets/tuplebad.py"}
+```python
+a = (1, 2, 3)
+a[1] = 3
+```
+```
+Traceback (most recent call last):
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/tuplebad.py", line 2, in <module>
+    a[1] = 3
+TypeError: 'tuple' object does not support item assignment
 ```
 
 One nice Python feature is tuple assignment.  If you have a
 tuple containing N elements, you can easily assign the
 values to N variables like so:
 
-```snippet
-{"code": "snippets/tupleassign.py"}
+```python
+a, b, c = (1, 2, 3)
+print(a)
+print(b)
+print(c)
+```
+```
+1
+2
+3
 ```
 
 This applies with any tuple stored in variables as well,
 for example:
 
-```snippet
-{"code": "snippets/tupleassignvar.py"}
+```python
+z = 1, 2, 3
+a, b, c = z
+print(a)
+print(b)
+print(c)
+```
+```
+1
+2
+3
 ```
 
 ### None
@@ -165,8 +245,41 @@ they just have no C alternative
 Lists are the typical replacement of arrays in C, but they are much more
 powerful.  Here is a simple example.
 
-```snippet
-{"code": "snippets/list.py"}
+```python
+a = [] # Create an empty list
+print(a)
+a.append(3.14)
+print(a)
+a.append(1)
+print(a)
+a.sort()
+print(a)
+b = a * 2
+print(b)
+z = [1] * 10 # Create a list of 10 ones
+print(z)
+r = list(range(10)) # Create a list of 0-9
+print(r)
+print(sum(r))
+print(sum(r)/len(r)) # Get the average
+r.reverse()
+print(r)
+print(max(r))
+print(min(r))
+```
+```
+[]
+[3.14]
+[3.14, 1]
+[1, 3.14]
+[1, 3.14, 1, 3.14]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+45
+4.5
+[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+9
+0
 ```
 
 ### Set
@@ -174,8 +287,28 @@ powerful.  Here is a simple example.
 A set is a data structure that allows very quick look up for elements.  It has
 similar semantics as a list, except it is unordered and faster in most cases.
 
-```snippet
-{"code": "snippets/sets.py"}
+```python
+a = set(range(100)) # create a set of numbers 1-100
+print(a)
+print(50 in a)
+print(200 in a)
+a.remove(50)
+a.add(200)
+print(50 in a)
+print(200 in a)
+x = set(range(75)) # Create a set of numbers from 0 to 74
+y = set(range(50, 100)) # Create a set of numbers from 50 to 100
+print(x.intersection(y)) # Get the numbers that are in boths sets
+print(x.union(y)) # Get the numbers that are in either set
+```
+```
+{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99}
+True
+False
+False
+True
+{50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74}
+{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99}
 ```
 
 Here is a speed comparison between a set and a list for looking up a number.
@@ -197,8 +330,18 @@ Here we used the example of integers, but sets work with almost any **basic**
 data type, and they are especially useful with strings.  Note that they do
 not work with advanced data types like lists, sets, and dictionaries.
 
-```snippet
-{"code": "snippets/setbad.py"}
+```python
+a = set() # create an empty set
+# These examples all give errors
+a.add(list())
+s.add(dict())
+s.add(set())
+```
+```
+Traceback (most recent call last):
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/setbad.py", line 3, in <module>
+    a.add(list())
+TypeError: unhashable type: 'list'
 ```
 
 Sets have no alternative in C, except if you code the data structure itself.
@@ -212,8 +355,35 @@ to a set, except that a value is also stored along with the key.  The dictionary
 is one of the most important and frequently used data structures in higher level
 programming.  Here are some simple examples of its use in Python.
 
-```snippet
-{"code": "snippets/dictionary.py"}
+```python
+classroom = {} # Create an empty dictionary (dict)
+# Set values in the dict:
+classroom['Cory'] = 80
+classroom['Ross'] = 90
+classroom['Gordon'] = 95
+print(classroom)
+# Get values in the dict:
+print(classroom['Cory'])
+print(list(classroom.items()))
+print(list(classroom.keys()))
+print(list(classroom.values()))
+# Store a nested dict:
+classroom = dict() # Create an empty dictionary (dict)
+classroom['Cory'] = {'Grades': [75, 85, 95]}
+classroom['Ross'] = {'Grades': [75, 85, 95, 100]}
+classroom['Gordon'] = {'Grades': [95, 95]}
+# Nested access
+print(classroom)
+print(classroom['Ross']['Grades'][-1]) # Get the last grade of Ross
+```
+```
+{'Cory': 80, 'Ross': 90, 'Gordon': 95}
+80
+[('Cory', 80), ('Ross', 90), ('Gordon', 95)]
+['Cory', 'Ross', 'Gordon']
+[80, 90, 95]
+{'Cory': {'Grades': [75, 85, 95]}, 'Ross': {'Grades': [75, 85, 95, 100]}, 'Gordon': {'Grades': [95, 95]}}
+100
 ```
 
 As with the set, getting and setting elements is very quick for a `dict`.
@@ -231,8 +401,16 @@ it, so where possible, we will show the alternative comprehension.
 The `if` statement works the same as in C, but it is written
 quite differently.  Let's take a look at a simple example.
 
-```snippet
-{"code": "snippets/if1.py"}
+```python
+if 3 > 2:
+    print('3 > 2?')
+    print('duh')
+else:
+    print('???')
+```
+```
+3 > 2?
+duh
 ```
 
 The first difference is is that the condition, `3 > 2` does
@@ -257,29 +435,64 @@ the first 10 positive square numbers.  In C, you would create an array of size
 10, loop from 1 to 10 and store the square of the loop index in the array.
 In Python you can it this way:
 
-```snippet
-{"code": "snippets/for1.py"}
+```python
+lst = [0] * 10 # Create 10 zeros
+for n in range(1, 11): # Loop from 1 to 10
+    lst[n-1] = n*n
+
+print(lst)
+```
+```
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 ```
 
 You could also create an empty list and add elements as you go
 
-```snippet
-{"code": "snippets/for2.py"}
+```python
+lst = [] # Create an empty list
+for n in range(1, 11): # Loop from 1 to 10
+    lst.append(n*n)
+
+print(lst)
+```
+```
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 ```
 
 The reason our last for loop repeated `lst.append(n*n)` but
 not `print(lst)` is only because the former was indented under
 the loop.  See what happens when we fail to indent properly:
 
-```snippet
-{"code": "snippets/for2bad.py"}
+```python
+lst = [] # Create an empty list
+for n in range(1, 11): # Loop from 1 to 10
+    lst.append(n*n)
+
+    print(lst)
+```
+```
+[1]
+[1, 4]
+[1, 4, 9]
+[1, 4, 9, 16]
+[1, 4, 9, 16, 25]
+[1, 4, 9, 16, 25, 36]
+[1, 4, 9, 16, 25, 36, 49]
+[1, 4, 9, 16, 25, 36, 49, 64]
+[1, 4, 9, 16, 25, 36, 49, 64, 81]
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 ```
 
 This example can most easily be done with exactly equivalent
 comprehension:
 
-```snippet
-{"code": "snippets/for3.py"}
+```python
+lst = [n*n for n in range(1, 11)]
+
+print(lst)
+```
+```
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 ```
 
 This comprehension would certainly be prefered as it is less code and more
@@ -291,21 +504,61 @@ Just as in C we can have nested for loops, we can have them in Python as well
 with the predictable syntax.  Let's take a look at an example that produces
 coordinate tuples in list of lists.
 
-```snippet
-{"code": "snippets/nestedfor1.py"}
+```python
+import pprint
+
+a = []
+for m in range(5):
+    a.append([])
+    for n in range(5):
+        a[m].append((m, n))
+
+pprint.pprint(a)
+```
+```
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)],
+ [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)],
+ [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)],
+ [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)],
+ [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
 ```
 
 Here we are using a list of lists to simulate a 2D array.  We could also create
 an array of zeros and then fill in each value rather than appending, like this:
 
-```snippet
-{"code": "snippets/nestedfor2.py"}
+```python
+import pprint
+
+a = [[0]*5, [0]*5, [0]*5, [0]*5, [0]*5]
+for m in range(5):
+    for n in range(5):
+        a[m][n] = (m, n)
+
+pprint.pprint(a)
+```
+```
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)],
+ [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)],
+ [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)],
+ [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)],
+ [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
 ```
 
 Finally, we could also use a nested list comprehension.
 
-```snippet
-{"code": "snippets/nestedfor3.py"}
+```python
+import pprint
+
+a = [[(m, n) for n in range(5)] for m in range(5)]
+
+pprint.pprint(a)
+```
+```
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)],
+ [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)],
+ [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)],
+ [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)],
+ [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
 ```
 
 At this point, some may consider the comprehension harder to read than the nested
@@ -321,21 +574,43 @@ This example shows how can you can use `continue` to create a
 list of filtered elements.  We add elements from 0 to 99 if
 the element is not divisible by any element less
 
-```snippet
-{"code": "snippets/continue.py"}
+```python
+lst = []
+
+for x in range(100):
+    if x % 3 or x % 5 == 0:
+        continue
+    lst.append(x)
+
+print(lst)
+```
+```
+[3, 6, 9, 12, 18, 21, 24, 27, 33, 36, 39, 42, 48, 51, 54, 57, 63, 66, 69, 72, 78, 81, 84, 87, 93, 96, 99]
 ```
 
 We can achieve similar behavior with a list comprehension as
 well.
 
-```snippet
-{"code": "snippets/listfilter.py"}
+```python
+lst = [x for x in range(100) if x % 3 != 0 and x % 5 != 0]
+
+print(lst)
+```
+```
+[1, 2, 4, 7, 8, 11, 13, 14, 16, 17, 19, 22, 23, 26, 28, 29, 31, 32, 34, 37, 38, 41, 43, 44, 46, 47, 49, 52, 53, 56, 58, 59, 61, 62, 64, 67, 68, 71, 73, 74, 76, 77, 79, 82, 83, 86, 88, 89, 91, 92, 94, 97, 98]
 ```
 
 Here we use break to find the solution to an equation.
 
-```snippet
-{"code": "snippets/break.py"}
+```python
+for n in range(100):
+    if (n * 342) % 333 == 243:
+        break
+
+print(n)
+```
+```
+27
 ```
 
 Python has an additional, very minor, control flow feature
@@ -347,8 +622,16 @@ a `for` loop will trigger if the for loop did not exit via
 `break`.  We could use this to detect if we did not find a
 solution in the last problem.  For example:
 
-```snippet
-{"code": "snippets/forelse.py"}
+```python
+for n in range(100):
+    if (n * 342) % 333 == 242:
+        print(n)
+        break
+else:
+    print('No solution')
+```
+```
+No solution
 ```
 
 ### While Loop
@@ -364,8 +647,14 @@ Functions are similar to their conterparts in C, but they have
 a lot more power.  Lets look at a simple example that just
 returns the sum of two numbers.
 
-```snippet
-{"code": "snippets/function1.py"}
+```python
+def plus(a, b):
+    return a + b
+
+print(plus(3, 4))
+```
+```
+7
 ```
 
 The first major difference you'll notice is that you don't
@@ -373,8 +662,14 @@ need to have any types associated with the arguments to the
 function, or the output.  However, you could add optional
 type hints if you want (but they won't do anything).
 
-```snippet
-{"code": "snippets/function_type_hint.py"}
+```python
+def plus(a: int, b: int) -> int:
+    return a + b
+
+print(plus(3, 4))
+```
+```
+7
 ```
 
 One nice feature of Python is the ability to return multiple
@@ -382,16 +677,42 @@ outputs from a function.  Technically this is not a feature
 of functions, but the feature of assigning tuple values to
 variables that we saw before.  Let's take a look:
 
-```snippet
-{"code": "snippets/function_return_multi.py"}
+```python
+def pythag(maxval):
+    for a in range(1, maxval):
+        for b in range(1, maxval):
+            for c in range(1, maxval):
+                if a**2 + b**2 == c**2:
+                    return (a, b, c)
+
+    return (None, None, None)
+
+a, b, c = pythag(10)
+print(a, b, c)
+```
+```
+3 4 5
 ```
 
 Note that this is a case where the `None` type is useful
 to signal to the caller that a solution could not be found.
 In this example we check for that case:
 
-```snippet
-{"code": "snippets/function_return_multi.py"}
+```python
+def pythag(maxval):
+    for a in range(1, maxval):
+        for b in range(1, maxval):
+            for c in range(1, maxval):
+                if a**2 + b**2 == c**2:
+                    return (a, b, c)
+
+    return (None, None, None)
+
+a, b, c = pythag(10)
+print(a, b, c)
+```
+```
+3 4 5
 ```
 
 Note that when checking for `None` values, we use the keyword
@@ -408,8 +729,19 @@ may take any number of sequential inputs.  For example, let's
 say we want to write a function which sums all of its inputs.
 This can be done like this:
 
-```snippet
-{"code": "snippets/varadic_1.py"}
+```python
+def sum_inputs(*args):
+    total = 0
+    for arg in args:
+        total += arg
+
+    return total
+
+my_sum = sum_inputs(1, 2, 3)
+print(my_sum)
+```
+```
+6
 ```
 
 You do not have to use the name `args`, you can make that any name you want.
@@ -418,8 +750,15 @@ with the name `args` and you can use that however you want.
 
 This could also be used to ignore or collect extra inputs.
 
-```snippet
-{"code": "snippets/varadic_2.py"}
+```python
+def add(a, b, *args):
+    return a + b
+
+my_sum = add(1, 2, 3)
+print(my_sum)
+```
+```
+3
 ```
 
 This can be useful if you are trying to make multiple functions
@@ -428,8 +767,16 @@ number of inputs)
 
 You can also use lists to supply the arguments to a function.
 
-```snippet
-{"code": "snippets/varadic_3.py"}
+```python
+def add(a, b):
+    return a + b
+
+summands = [1, 2]
+my_sum = add(*summands)
+print(my_sum)
+```
+```
+3
 ```
 
 This can be useful for programatically grouping and supplying arguments.
@@ -442,16 +789,39 @@ to what parameter.  **Keyword Arguments** allow the programmer
 to specify an argument by name rather than by position.  For
 example:
 
-```snippet
-{"code": "snippets/kwargs_1.py"}
+```python
+def divide(top, bottom):
+    return top / bottom
+
+result = divide(1, 5)
+print(result)
+result = divide(top=1, bottom=5)
+print(result)
+result = divide(bottom=5, top=1)
+print(result)
+```
+```
+0.2
+0.2
+0.2
 ```
 
 In case you want to force yourself or another programmer to use
 keyword arguments with your function (to avoid common mistakes)
 you can place a `*` before the arguments.
 
-```snippet
-{"code": "snippets/kwargs_2.py"}
+```python
+def divide(*, top, bottom):
+    return top / bottom
+
+result = divide(1, 5)
+print(result)
+```
+```
+Traceback (most recent call last):
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/kwargs_2.py", line 4, in <module>
+    result = divide(1, 5)
+TypeError: divide() takes 0 positional arguments but 2 were given
 ```
 
 You can automatically gather extra keyword arugments similar to
@@ -459,23 +829,51 @@ how you can gather extra positional arguments with `*args` by
 using `**kwargs`.  Note again there is nothing special about
 the name `kwargs` but it is very commonly used for this case.
 
-```snippet
-{"code": "snippets/kwargs_3.py"}
+```python
+def divide(**kwargs):
+    return kwargs['top'] / kwargs['bottom']
+
+result = divide(top=1, bottom=5)
+print(result)
+```
+```
+0.2
 ```
 
 Similar to how you can use `*args` when supplying an input
 to a function, you can also use `**kwargs` if you want to
 supply a dictionary as the input to a function.
 
-```snippet
-{"code": "snippets/kwargs_4.py"}
+```python
+def divide(top, bottom):
+    return top / bottom
+
+kwargs = {'top': 1, 'bottom': 5}
+result = divide(**kwargs)
+print(result)
+```
+```
+0.2
 ```
 
 Combining keyword arugments along with varadic functions, we
 can create a function that takes any input at all.
 
-```snippet
-{"code": "snippets/kwargs_5.py"}
+```python
+def anything(*args, **kwargs):
+    for arg in args:
+        print(arg)
+    for key, value in kwargs.items():
+        print(key, ':', value)
+
+anything(1, 'hello', 5.3, boo='!', whatever=[])
+```
+```
+1
+hello
+5.3
+boo : !
+whatever : []
 ```
 
 We will see later on this pattern is very useful when trying
@@ -487,16 +885,58 @@ anything into this function that you can into any other function.
 Recursion works similarly to C.  Here is a simple Fibonacci
 example.
 
-```snippet
-{"code": "snippets/fibonacci.py"}
+```python
+def fib(n):
+    if n == 0 or n == 1:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+
+for n in range(10):
+    print(fib(n))
+```
+```
+1
+1
+2
+3
+5
+8
+13
+21
+34
+55
 ```
 
 However there is one weakness: There is a fairly low limit to
 how many times you are allowed to recurse in Python.  Usually
 only up to a depth of around 1000.  For example:
 
-```snippet
-{"code": "snippets/recurse_limit.py"}
+```python
+def count(n):
+    if n == 0:
+        return 0
+    else:
+        return 1 + count(n-1)
+
+print(count(100))
+print(count(1000))
+```
+```
+100
+Traceback (most recent call last):
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/recurse_limit.py", line 8, in <module>
+    print(count(1000))
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/recurse_limit.py", line 5, in count
+    return 1 + count(n-1)
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/recurse_limit.py", line 5, in count
+    return 1 + count(n-1)
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/recurse_limit.py", line 5, in count
+    return 1 + count(n-1)
+  [Previous line repeated 995 more times]
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/recurse_limit.py", line 2, in count
+    if n == 0:
+RecursionError: maximum recursion depth exceeded in comparison
 ```
 
 ### Control Flow Conclusion
@@ -505,8 +945,63 @@ That all covers basic control flow in Python.  Just to show
 a quick example of more meaningful code, here is the
 `mandelbrot` assignment re-written in Python.
 
-```snippet
-{"code": "snippets/mandelbrot.py"}
+```python
+def in_mandelbrot_set(c):
+    x = 0
+    for n in range(100):
+        x = x*x + c
+        if abs(x) > 2:
+            return False
+
+    return True
+
+def visualize():
+    dx = 0.03125;
+    dy = 0.0625;
+    for n in range(-16, 16+1):
+        for m in range(-64, 16+1):
+            if in_mandelbrot_set(m*dx + 1j*n*dy):
+                print('*', end='')
+            else:
+                print(' ', end='')
+        print();
+
+visualize()
+```
+```
+                                                                *                
+                                                                                 
+                                                            *                    
+                                                         ******                  
+                                                         *******                 
+                                                          *****                  
+                                                    *************** *            
+                                               ***********************  ***      
+                                                ***************************      
+                                            * ****************************       
+                                            *******************************      
+                                           **********************************    
+                           ** ****        ***********************************    
+                           ***********   ************************************    
+                         *************** ***********************************     
+                     **  *************** **********************************      
+*************************************************************************        
+                     **  *************** **********************************      
+                         *************** ***********************************     
+                           ***********   ************************************    
+                           ** ****        ***********************************    
+                                           **********************************    
+                                            *******************************      
+                                            * ****************************       
+                                                ***************************      
+                                               ***********************  ***      
+                                                    *************** *            
+                                                          *****                  
+                                                         *******                 
+                                                         ******                  
+                                                            *                    
+                                                                                 
+                                                                *                
 ```
 
 ## Advanced Functions
@@ -520,8 +1015,23 @@ we can do a lot more with functions.
 Similar to C, we can pass functions as arguments to other functions, but the
 syntax is a lot simpler in Python.  Watch this:
 
-```snippet
-{"code": "snippets/functional_1.py"}
+```python
+def add_one(x):
+    return x + 1
+
+def apply_function(f, lst):
+    length = len(lst)
+    for n in range(length):
+        lst[n] = f(lst[n])
+
+lst = [1, 2, 3]
+print(lst)
+apply_function(add_one, lst)
+print(lst)
+```
+```
+[1, 2, 3]
+[2, 3, 4]
 ```
 
 **Question: How can we write the above program as a comprehension?**
@@ -531,21 +1041,91 @@ syntax is a lot simpler in Python.  Watch this:
 In case we don't have a function readily defined, we can use **lambda** to 
 define one on the spot.
 
-```snippet
-{"code": "snippets/functional_1.py"}
+```python
+def add_one(x):
+    return x + 1
+
+def apply_function(f, lst):
+    length = len(lst)
+    for n in range(length):
+        lst[n] = f(lst[n])
+
+lst = [1, 2, 3]
+print(lst)
+apply_function(add_one, lst)
+print(lst)
+```
+```
+[1, 2, 3]
+[2, 3, 4]
 ```
 
 There is basically no difference in doing this compared to defining a function
 beforehand, it's just convenient.
 
-```snippet
-{"code": "snippets/lambda_1.py"}
+```python
+def apply_function(f, lst):
+    length = len(lst)
+    for n in range(length):
+        lst[n] = f(lst[n])
+
+lst = [1, 2, 3]
+print(lst)
+apply_function(lambda x: x + 1, lst)
+print(lst)
+```
+```
+[1, 2, 3]
+[2, 3, 4]
 ```
 
 You will often see this in the context of some built in functions:
 
-```snippet
-{"code": "snippets/lambda_2.py"}
+```python
+import pprint
+lst = [
+    {'name': 'zachary', 'grade': 70},
+    {'name': 'cory', 'grade': 80},
+    {'name': 'deborah', 'grade': 100},
+    {'name': 'ross', 'grade': 90},
+    {'name': 'gordon', 'grade': 85},
+]
+print('Unsorted')
+pprint.pprint(lst)
+lst.sort(key=lambda record: record['grade'])
+print('Sorted by grade')
+pprint.pprint(lst)
+lst.sort(key=lambda record: record['name'])
+print('Sorted by name')
+pprint.pprint(lst)
+print('Highest Grade')
+pprint.pprint(max(lst, key=lambda record: record['grade']))
+print('First Name (Alphabetically)')
+pprint.pprint(min(lst, key=lambda record: record['name']))
+```
+```
+Unsorted
+[{'grade': 70, 'name': 'zachary'},
+ {'grade': 80, 'name': 'cory'},
+ {'grade': 100, 'name': 'deborah'},
+ {'grade': 90, 'name': 'ross'},
+ {'grade': 85, 'name': 'gordon'}]
+Sorted by grade
+[{'grade': 70, 'name': 'zachary'},
+ {'grade': 80, 'name': 'cory'},
+ {'grade': 85, 'name': 'gordon'},
+ {'grade': 90, 'name': 'ross'},
+ {'grade': 100, 'name': 'deborah'}]
+Sorted by name
+[{'grade': 80, 'name': 'cory'},
+ {'grade': 100, 'name': 'deborah'},
+ {'grade': 85, 'name': 'gordon'},
+ {'grade': 90, 'name': 'ross'},
+ {'grade': 70, 'name': 'zachary'}]
+Highest Grade
+{'grade': 100, 'name': 'deborah'}
+First Name (Alphabetically)
+{'grade': 80, 'name': 'cory'}
 ```
 
 ### Functions as Return Values
@@ -555,15 +1135,71 @@ For example, we can create a function that takes in any other function
 as a parameter and then returns a function which does the same thing,
 and also prints the time it took to run.
 
-```snippet
-{"code": "snippets/functional_2.py"}
+```python
+import time
+
+def timed(f):
+    def wrapper(*args, **kwargs):
+        t1 = time.time()
+        retval = f(*args, **kwargs)
+        t2 = time.time()
+        print(f'Calling "{f.__name__}" took {t2-t1} seconds')
+        return retval
+    return wrapper
+
+def wait(seconds):
+    print('waiting')
+    time.sleep(seconds)
+    print('done waiting!')
+
+timed_wait = timed(wait)
+
+timed_wait(0.1)
+timed_wait(0.2)
+timed_wait(0.3)
+```
+```
+waiting
+done waiting!
+Calling "wait" took 0.10035276412963867 seconds
+waiting
+done waiting!
+Calling "wait" took 0.20341777801513672 seconds
+waiting
+done waiting!
+Calling "wait" took 0.3040909767150879 seconds
 ```
 
 This is fairly common for some Python programs, so there is even a
 special syntax for doing it:
 
-```snippet
-{"code": "snippets/functional_3.py"}
+```python
+import time
+
+def timed(f):
+    def wrapper(*args, **kwargs):
+        t1 = time.time()
+        retval = f(*args, **kwargs)
+        t2 = time.time()
+        print(f'Calling "{f.__name__}" took {t2-t1} seconds')
+        return retval
+    return wrapper
+
+@timed
+def wait(seconds):
+    print('waiting')
+    time.sleep(seconds)
+    print('done waiting!')
+
+timed_wait(0.1)
+timed_wait(0.2)
+timed_wait(0.3)
+```
+```
+Traceback (most recent call last):
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/functional_3.py", line 18, in <module>
+    timed_wait(0.1)
+NameError: name 'timed_wait' is not defined
 ```
 
 The `@` basically says to do something like `wait = timed(wait)`
@@ -577,14 +1213,24 @@ separated by newlines.
 
 ### Command Line Input
 
-```snippet
-{"code": "snippets/input_1.py"}
+```python
+import sys
+
+for arg in sys.argv:
+    print(arg)
+```
+```
+snippets/input_1.py
 ```
 
 You can get interactive user input with the `input` function.
 
-```snippet
-{"code": "snippets/input_2.py"}
+```python
+name = input('Enter your name: ')
+print(f'Hello, {name}')
+```
+```
+Enter your name: Hello, Cory
 ```
 
 **Question: Write a program that prints the sum of user inputs**
@@ -593,8 +1239,25 @@ You can get interactive user input with the `input` function.
 
 You can read files by using the `open` keyword.
 
-```snippet
-{"code": "snippets/input_3.py"}
+```python
+opened_file = open('README.md')
+
+content = opened_file.read()
+
+print(f'Number of characters: {len(content)}')
+words = content.split()
+print(f'Number of words: {len(words)}')
+lines = content.split('\n')
+print(f'Number of lines: {len(lines)}')
+print(f'Number of unique words: {len(set(words))}')
+
+opened_file.close()
+```
+```
+Number of characters: 18100
+Number of words: 2990
+Number of lines: 618
+Number of unique words: 958
 ```
 
 It is generally good practice to close a file after you are done
@@ -603,14 +1266,36 @@ is a common mistake to forget to close it, so in Python you can
 using something called a **context manager** which will close it
 for you.
 
-```snippet
-{"code": "snippets/input_4.py"}
+```python
+with open('README.md') as opened_file:
+    content = opened_file.read()
+    print(f'Number of characters: {len(content)}')
+    words = content.split()
+    print(f'Number of words: {len(words)}')
+    lines = content.split('\n')
+    print(f'Number of lines: {len(lines)}')
+    print(f'Number of unique words: {len(set(words))}')
+```
+```
+Number of characters: 18100
+Number of words: 2990
+Number of lines: 618
+Number of unique words: 958
 ```
 
 ### File Output
 
 You can write to files in a similar way as you read from them.
 
-```snippet
-{"code": "snippets/output_1.py"}
+```python
+with open('output.txt', 'w') as opened_file:
+    opened_file.write('Hello, ')
+    opened_file.write('world')
+    opened_file.write('!')
+
+with open('output.txt') as opened_file:
+    print(opened_file.read())
+```
+```
+Hello, world!
 ```
