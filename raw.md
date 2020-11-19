@@ -566,8 +566,9 @@ special syntax for doing it:
 {"code": "snippets/functional_3.py"}
 ```
 
-The `@` basically says to do something like `wait = timed(wait)`
-just after the definition.
+The `@` basically says to do something like `wait = timed(wait)` just after the
+definition.  A function like this, which takes a function and returns a
+function is called a **decorator**.
 
 ## Input and (File) Output
 
@@ -584,7 +585,8 @@ separated by newlines.
 You can get interactive user input with the `input` function.
 
 ```snippet
-{"code": "snippets/input_2.py"}
+{"code": "snippets/input_2.py",
+ "input": "Cory"}
 ```
 
 **Question: Write a program that prints the sum of user inputs**
@@ -613,4 +615,141 @@ You can write to files in a similar way as you read from them.
 
 ```snippet
 {"code": "snippets/output_1.py"}
+```
+
+## Classes
+
+### Basic Example
+
+Classes in Python are similar to classes in C++, just with some different
+syntax and more freedom.  You can define a new class by using the `class`
+keyword, and create a new instance (object) by "calling" it with parentheses.
+Here is a simple example.
+
+```snippet
+{"code": "snippets/class_1.py"}
+```
+
+### Methods
+
+Methods of classes can defined the same way functions can.  Just make sure
+they are indented and within in your class definition.  One major difference
+between Python and C++ (and more languages) is that in Python, the reference
+to the object (the `this` keyword in C++) is implicitly provided as an input
+to every method.  Here is an example demonstrating this
+
+```snippet
+{"code": "snippets/method.py"}
+```
+
+The name `self` is not special, you could technically put anything there, but
+the name `self` is the convention and there is no reason to stray from it.
+You must explicitly type `self` as the first input of every method (with few
+exceptions we will talk about later)
+
+Here is an example of a common mistake.  Forgetting to write `self` as the first
+argument leads to an error because the method is implicitly called with `foo` as
+the first argument but as defined the method takes zero arguments.
+
+```snippet
+{"code": "snippets/method_wrong.py"}
+```
+
+### Constructor
+
+You can create a constructor for a class by implementing the special
+`__init__` method.  The double underscores preceding and following `init`
+can be pronounced **dunder**, so we can pronounce this as **dunder init**.
+This method is known as a **magic method** because it is typically not
+called explicitly.  Here is an example of a simple constructor.
+
+```snippet
+{"code": "snippets/constructor.py"}
+```
+
+Note that as with other methods, `self` is the first argument.  We can
+use `self` to add data to the object.  In this cases we added some 
+arbitrary `x` value, and then we can reference it later in `print_x`
+
+### Destructor
+
+You don't really have to write destructors in Python because memory is
+mostly handled for you.  However the option is there with the magic method
+`__del__` which we can see implemented here
+
+```snippet
+{"code": "snippets/destructor.py"}
+```
+
+You can see that we never explicitly delete the object like in C++, we just
+set the variable name containing that object to another variable and Python is
+smart enough to destroy the object when it sees we may no longer reference it.
+
+### Static Methods
+
+If the method you are writing does not need a reference to the object calling it,
+but you want to logically group it with your class, you can use the `@staticmethod`
+decorator to avoid passing `self` like this:
+
+```snippet
+{"code": "snippets/staticmethod.py"}
+```
+
+In this case, you should consider whether it makes sense to just move the
+function out of the class, since it has the same effect.
+
+**Problem:** How can we implement the `@staticmethod` deocrator?
+
+### Class Methods
+
+If you want to write a method which creates an instance of your class with
+some special logic, you can use a `@classmethod`.  In a class method, the
+class of the object will be implicitly given as the first paremeter, rather
+than the object itself.  This can useful for creating classes from some
+other common objects with some additional logic.  Here is an example.
+
+```snippet
+{"code": "snippets/classmethod.py"}
+```
+
+### Abstract Methods
+
+Python has **abstract base classes** and **virtual functions**, almost the same
+as in C++ but under some new syntax and naming.  Here is an example that
+implements an abstract base class with one virtual function (now called an
+abstract method)
+
+```snippet
+{"code": "snippets/abstractmethod.py"}G
+```
+
+You can see if we try to create an instance of an abstract base class that
+has an abstract method, we get an error, as we did in C++.  We can fix this
+by creating a new class and **inheriting** from the base class, implementing
+the method.
+
+```snippet
+{"code": "snippets/correct.py"}G
+```
+
+### Inheritance
+
+Inheritance works pretty much the same as in C++, let's take a look at an example.
+
+```snippet
+{"code": "snippets/inheritance.py"}
+```
+
+You can use the `super` keyword to call a parent method, when implementing a new
+version of that method.  For example, let's say we wanted to extend a class's
+constructor to take an additional parameter but otherwise do the same stuff.
+
+### Other Magic Methods
+
+There are a ton of other magic methods that Python lets you override in your
+classes.  Here we will go over an example with a couple, but there are a lot
+more.
+
+```snippet
+{"code": "snippets/dunder.py"}
 ```
