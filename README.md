@@ -1161,13 +1161,13 @@ timed_wait(0.3)
 ```
 waiting
 done waiting!
-Calling "wait" took 0.10035276412963867 seconds
+Calling "wait" took 0.10377287864685059 seconds
 waiting
 done waiting!
-Calling "wait" took 0.20341777801513672 seconds
+Calling "wait" took 0.20514988899230957 seconds
 waiting
 done waiting!
-Calling "wait" took 0.3040909767150879 seconds
+Calling "wait" took 0.30387306213378906 seconds
 ```
 
 This is fairly common for some Python programs, so there is even a
@@ -1202,8 +1202,9 @@ Traceback (most recent call last):
 NameError: name 'timed_wait' is not defined
 ```
 
-The `@` basically says to do something like `wait = timed(wait)`
-just after the definition.
+The `@` basically says to do something like `wait = timed(wait)` just after the
+definition.  A function like this, which takes a function and returns a
+function is called a **decorator**.
 
 ## Input and (File) Output
 
@@ -1254,10 +1255,10 @@ print(f'Number of unique words: {len(set(words))}')
 opened_file.close()
 ```
 ```
-Number of characters: 18100
-Number of words: 2990
-Number of lines: 618
-Number of unique words: 958
+Number of characters: 0
+Number of words: 0
+Number of lines: 1
+Number of unique words: 0
 ```
 
 It is generally good practice to close a file after you are done
@@ -1277,10 +1278,10 @@ with open('README.md') as opened_file:
     print(f'Number of unique words: {len(set(words))}')
 ```
 ```
-Number of characters: 18100
-Number of words: 2990
-Number of lines: 618
-Number of unique words: 958
+Number of characters: 0
+Number of words: 0
+Number of lines: 1
+Number of unique words: 0
 ```
 
 ### File Output
@@ -1298,4 +1299,335 @@ with open('output.txt') as opened_file:
 ```
 ```
 Hello, world!
+```
+
+## Classes
+
+### Basic Example
+
+Classes in Python are similar to classes in C++, just with some different
+syntax and more freedom.  You can define a new class by using the `class`
+keyword, and create a new instance (object) by "calling" it with parentheses.
+Here is a simple example.
+
+```python
+class Foo():
+    pass
+
+foo = Foo()
+
+print(foo)
+```
+```
+<__main__.Foo object at 0x107232340>
+```
+
+### Methods
+
+Methods of classes can defined the same way functions can.  Just make sure
+they are indented and within in your class definition.  One major difference
+between Python and C++ (and more languages) is that in Python, the reference
+to the object (the `this` keyword in C++) is implicitly provided as an input
+to every method.  Here is an example demonstrating this
+
+```python
+class Foo():
+    def print_hi(self):
+        print('hi')
+
+foo = Foo()
+foo.print_hi()
+```
+```
+hi
+```
+
+The name `self` is not special, you could technically put anything there, but
+the name `self` is the convention and there is no reason to stray from it.
+You must explicitly type `self` as the first input of every method (with few
+exceptions we will talk about later)
+
+Here is an example of a common mistake.  Forgetting to write `self` as the first
+argument leads to an error because the method is implicitly called with `foo` as
+the first argument but as defined the method takes zero arguments.
+
+```python
+class Foo():
+    def print_hi():
+        print('hi')
+
+foo = Foo()
+foo.print_hi()
+```
+```
+Traceback (most recent call last):
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/method_wrong.py", line 6, in <module>
+    foo.print_hi()
+TypeError: print_hi() takes 0 positional arguments but 1 was given
+```
+
+### Constructor
+
+You can create a constructor for a class by implementing the special
+`__init__` method.  The double underscores preceding and following `init`
+can be pronounced **dunder**, so we can pronounce this as **dunder init**.
+This method is known as a **magic method** because it is typically not
+called explicitly.  Here is an example of a simple constructor.
+
+```python
+class Foo():
+
+    def __init__(self, x):
+        self.x = x
+
+    def print_x(self):
+        print(self.x)
+
+foo = Foo(5)
+foo.print_x()
+```
+```
+5
+```
+
+Note that as with other methods, `self` is the first argument.  We can
+use `self` to add data to the object.  In this cases we added some 
+arbitrary `x` value, and then we can reference it later in `print_x`
+
+### Destructor
+
+You don't really have to write destructors in Python because memory is
+mostly handled for you.  However the option is there with the magic method
+`__del__` which we can see implemented here
+
+```python
+class Foo():
+
+    def __init__(self, x):
+        self.x = x
+
+    def print_x(self):
+        print(self.x)
+
+    def __del__(self):
+        print('I am being destroyed')
+
+foo = Foo(5)
+foo.print_x()
+print('getting rid of foo')
+foo = 1
+print('got rid of foo')
+```
+```
+5
+getting rid of foo
+I am being destroyed
+got rid of foo
+```
+
+You can see that we never explicitly delete the object like in C++, we just
+set the variable name containing that object to another variable and Python is
+smart enough to destroy the object when it sees we may no longer reference it.
+
+### Static Methods
+
+If the method you are writing does not need a reference to the object calling it,
+but you want to logically group it with your class, you can use the `@staticmethod`
+decorator to avoid passing `self` like this:
+
+```python
+class Foo():
+    @staticmethod
+    def print_hi():
+        print('hi')
+
+foo = Foo()
+foo.print_hi()
+Foo.print_hi()
+```
+```
+hi
+hi
+```
+
+In this case, you should consider whether it makes sense to just move the
+function out of the class, since it has the same effect.
+
+**Problem:** How can we implement the `@staticmethod` deocrator?
+
+### Class Methods
+
+If you want to write a method which creates an instance of your class with
+some special logic, you can use a `@classmethod`.  In a class method, the
+class of the object will be implicitly given as the first paremeter, rather
+than the object itself.  This can useful for creating classes from some
+other common objects with some additional logic.  Here is an example.
+
+```python
+class Foo():
+    def __init__(self, one, two, three):
+        self.one = one
+        self.two = two
+        self.three = three
+
+    def print_all(self):
+        print(self.one, self.two, self.three)
+
+    @classmethod
+    def make_foo_from_list(cls, lst):
+        return cls(lst[0], lst[1], lst[2])
+
+foo = Foo.make_foo_from_list(['a', 'b', 'c'])
+foo.print_all()
+```
+```
+a b c
+```
+
+### Abstract Methods
+
+Python has **abstract base classes** and **virtual functions**, almost the same
+as in C++ but under some new syntax and naming.  Here is an example that
+implements an abstract base class with one virtual function (now called an
+abstract method)
+
+```python
+import abc # abstract base class
+
+class Foo(abc.ABC):
+    @abc.abstractmethod
+    def print_me():
+        pass
+
+foo = Foo()
+```
+```
+Traceback (most recent call last):
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/abstractmethod.py", line 8, in <module>
+    foo = Foo()
+TypeError: Can't instantiate abstract class Foo with abstract method print_me
+```
+
+You can see if we try to create an instance of an abstract base class that
+has an abstract method, we get an error, as we did in C++.  We can fix this
+by creating a new class and **inheriting** from the base class, implementing
+the method.
+
+```python
+import abc # abstract base class
+
+class Foo(abc.ABC):
+    @abc.abstractmethod
+    def print_me(self):
+        pass
+
+class XBar(Foo):
+    def __init__(self, x):
+        self.x = x
+
+    def print_me(self):
+        print(self.x.lower())
+
+class YBar(Foo):
+    def __init__(self, y):
+        self.y = y
+
+    def print_me(self):
+        print(self.y.upper())
+
+xbar = XBar('xyz')
+ybar = YBar('xyz')
+xbar.print_me()
+ybar.print_me()
+```
+```
+xyz
+XYZ
+```
+
+### Inheritance
+
+Inheritance works pretty much the same as in C++, let's take a look at an example.
+
+```python
+import abc # abstract base class
+
+class Foo():
+    def print_hi(self):
+        print('hi')
+    def print_bye(self):
+        print('bye')
+
+class Bar(Foo):
+    def print_hi(self):
+        print('hello there')
+
+foo = Foo()
+foo.print_hi()
+foo.print_bye()
+bar = Bar()
+bar.print_hi()
+bar.print_bye()
+```
+```
+hi
+bye
+hello there
+bye
+```
+
+You can use the `super` keyword to call a parent method, when implementing a new
+version of that method.  For example, let's say we wanted to extend a class's
+constructor to take an additional parameter but otherwise do the same stuff.
+
+### Other Magic Methods
+
+There are a ton of other magic methods that Python lets you override in your
+classes.  Here we will go over an example with a couple, but there are a lot
+more.
+
+```python
+class Interval():
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+
+    def __repr__(self):
+        return f'{self.start} -> {self.end}'
+
+    def __str__(self):
+        return f'{self.start} -> {self.end}'
+
+    def __contains__(self, element):
+        return bool(self.start < element < self.end)
+
+    def __iter__(self):
+        return iter(range(self.start, self.end + 1))
+
+    def __mul__(self, other):
+        return Interval(max(self.start, other.start), min(self.end, other.end))
+
+    def __nonzero__(self):
+        return bool(len(self))
+
+    def __len__(self):
+        return self.end - self.start
+
+foo = Interval(5, 9)
+bar = Interval(7, 11)
+empty = Interval(7, 7)
+print(foo)
+print(6 in foo)
+print(list(foo))
+print(foo * bar)
+print(len(empty))
+print(bool(empty))
+```
+```
+5 -> 9
+True
+[5, 6, 7, 8, 9]
+7 -> 9
+0
+False
 ```

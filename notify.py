@@ -23,7 +23,7 @@ def run(match):
     printed = printed.decode('utf8')
     return f'```python\n{content}```\n```\n{printed}```'
 
-with open('README.md') as f, open('output.md', 'w') as g:
+with open('raw.md') as f, open('README.md', 'w') as g:
     content = f.read()
     content = re.sub(
         '```snippet(.*?)```',
