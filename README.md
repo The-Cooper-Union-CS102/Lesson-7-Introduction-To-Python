@@ -1161,13 +1161,13 @@ timed_wait(0.3)
 ```
 waiting
 done waiting!
-Calling "wait" took 0.10377287864685059 seconds
+Calling "wait" took 0.10355091094970703 seconds
 waiting
 done waiting!
-Calling "wait" took 0.20514988899230957 seconds
+Calling "wait" took 0.20382285118103027 seconds
 waiting
 done waiting!
-Calling "wait" took 0.30387306213378906 seconds
+Calling "wait" took 0.3050539493560791 seconds
 ```
 
 This is fairly common for some Python programs, so there is even a
@@ -1205,6 +1205,97 @@ NameError: name 'timed_wait' is not defined
 The `@` basically says to do something like `wait = timed(wait)` just after the
 definition.  A function like this, which takes a function and returns a
 function is called a **decorator**.
+
+### Generators
+
+In Python, there is a special type of object called a **generator function**.  A
+generator function is like a function, except that it maintains state between
+calls.  It can maintain data like variables, and even what line of code it
+exited from.  It will return to that line of code when you call it again.
+
+Here is a simple generator which counts to 3.
+
+```python
+def count_to_3():
+    yield 1
+    yield 2
+    yield 3
+
+generator = count_to_3()
+print(next(generator))
+print(next(generator))
+print(next(generator))
+```
+```
+1
+2
+3
+```
+
+Instead of `return`, you give a value back with `yield`.  You can see that
+every time you call `next` on a generator it advances to the next `yield`
+statement.  If you go too far, you will get an error.
+
+```python
+def count_to_3():
+    yield 1
+    yield 2
+    yield 3
+
+generator = count_to_3()
+print(next(generator))
+print(next(generator))
+print(next(generator))
+print(next(generator))
+```
+```
+1
+2
+3
+Traceback (most recent call last):
+  File "/Users/cnezin/cs102/Lesson-7-Introduction-To-Python/snippets/generator_wrong.py", line 10, in <module>
+    print(next(generator))
+StopIteration
+```
+
+You can convert any generator into a plain old list by using `list`.
+
+```python
+def count_to_3():
+    yield 1
+    yield 2
+    yield 3
+
+generator = count_to_3()
+print(list(generator))
+```
+```
+[1, 2, 3]
+```
+
+You can do basically anything you can do with a normal function, and even
+create multiple instances of a generator at once:
+
+```python
+def count_to_n(n):
+    for i in range(n):
+        yield i
+
+generator_10 = count_to_n(10)
+generator_100 = count_to_n(100)
+print(list(generator_10))
+print(list(generator_100))
+print(list(generator_10))
+```
+```
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
+[]
+```
+
+Just be careful!  Generators come with a huge warning.  Once you've used a value,
+that's it.  You cannot get it back again it is forever gone.  That is why when
+we print `list(generator_10)` a second time, it is empty.
 
 ## Input and (File) Output
 
@@ -1319,7 +1410,7 @@ foo = Foo()
 print(foo)
 ```
 ```
-<__main__.Foo object at 0x107232340>
+<__main__.Foo object at 0x1018a7340>
 ```
 
 ### Methods

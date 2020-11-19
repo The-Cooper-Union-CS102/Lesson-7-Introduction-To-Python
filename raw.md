@@ -570,6 +570,44 @@ The `@` basically says to do something like `wait = timed(wait)` just after the
 definition.  A function like this, which takes a function and returns a
 function is called a **decorator**.
 
+### Generators
+
+In Python, there is a special type of object called a **generator function**.  A
+generator function is like a function, except that it maintains state between
+calls.  It can maintain data like variables, and even what line of code it
+exited from.  It will return to that line of code when you call it again.
+
+Here is a simple generator which counts to 3.
+
+```snippet
+{"code": "snippets/generator.py"}
+```
+
+Instead of `return`, you give a value back with `yield`.  You can see that
+every time you call `next` on a generator it advances to the next `yield`
+statement.  If you go too far, you will get an error.
+
+```snippet
+{"code": "snippets/generator_wrong.py"}
+```
+
+You can convert any generator into a plain old list by using `list`.
+
+```snippet
+{"code": "snippets/generator_list.py"}
+```
+
+You can do basically anything you can do with a normal function, and even
+create multiple instances of a generator at once:
+
+```snippet
+{"code": "snippets/generator_wee.py"}
+```
+
+Just be careful!  Generators come with a huge warning.  Once you've used a value,
+that's it.  You cannot get it back again it is forever gone.  That is why when
+we print `list(generator_10)` a second time, it is empty.
+
 ## Input and (File) Output
 
 You can get command line arguments and inputs by using `sys.argv`.
@@ -720,7 +758,7 @@ implements an abstract base class with one virtual function (now called an
 abstract method)
 
 ```snippet
-{"code": "snippets/abstractmethod.py"}G
+{"code": "snippets/abstractmethod.py"}
 ```
 
 You can see if we try to create an instance of an abstract base class that
@@ -729,7 +767,7 @@ by creating a new class and **inheriting** from the base class, implementing
 the method.
 
 ```snippet
-{"code": "snippets/correct.py"}G
+{"code": "snippets/abstractmethod_correct.py"}
 ```
 
 ### Inheritance
