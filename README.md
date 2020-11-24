@@ -2264,5 +2264,19 @@ b'<!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="e
 
 #### Custom
 
+You can create your own custom modules easily.  Here is how.
 
+1. Make a directory: `mkdir my_module`
+2. Create an `__init__.py`: `touch my_module/__init__.py`
+3. Write some code: `echo "def greet(): return 'hi'" > my_module/mymod.py`
 
+That's it.  Now use it like this:
+
+```python
+import my_module.mymod
+my_module.mymod.greet()
+```
+
+```
+hi
+```
