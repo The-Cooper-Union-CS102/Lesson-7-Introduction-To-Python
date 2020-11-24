@@ -788,6 +788,148 @@ There are a ton of other magic methods that Python lets you override in your
 classes.  Here we will go over an example with a couple, but there are a lot
 more.
 
+
 ```snippet
 {"code": "snippets/dunder.py"}
 ```
+
+## Modules
+
+### Importing
+
+There are several ways to import code from another file.
+
+1. `import x`
+
+```snippet
+{"code": "snippets/simple_import.py"}
+```
+
+In this case you will always be importing a module object, which you can then
+use by accessing its members
+
+2. `import x as y`
+
+```snippet
+{"code": "snippets/alias_import.py"}
+```
+
+This is the same, except you can give it a new name.  This can be helpful if
+two custom modules happen to have the same name, or you want a shorter name.
+
+3. `from x import y`
+
+```snippet
+{"code": "snippets/from_import.py"}
+```
+
+This imports a specific thing (could be a variable, object, function, class,
+whatever) from the given module.
+
+4. `from x import y as z`
+
+```snippet
+{"code": "snippets/from_alias_import.py"}
+```
+
+This does the same but gives it a new name.
+
+### Modules
+
+Look here for a full list of built in Python modules:
+`https://docs.python.org/3/py-modindex.html`
+
+Most modules are useuless to you, so we will go over some common and useful
+ones.
+
+#### `copy`
+
+```snippet
+{"code": "snippets/my_copy.py"}
+```
+
+#### `math`
+
+```snippet
+{"code": "snippets/my_math.py"}
+```
+
+#### `random`
+
+```snippet
+{"code": "snippets/my_random.py"}
+```
+
+#### `collections`
+
+```snippet
+{"code": "snippets/my_collections.py"}
+```
+
+#### `enum`
+
+```snippet
+{"code": "snippets/my_enum.py"}
+```
+
+#### `functools`
+
+```snippet
+{"code": "snippets/my_functools.py"}
+```
+
+#### `heapq`
+
+```snippet
+{"code": "snippets/my_heapq.py"}
+```
+
+#### `itertools`
+
+```snippet
+{"code": "snippets/my_itertools.py"}
+```
+
+#### `json`
+
+```snippet
+{"code": "snippets/my_json.py"}
+```
+
+#### `logging`
+
+```snippet
+{"code": "snippets/my_json.py"}
+```
+
+#### `os`
+
+```snippet
+{"code": "snippets/my_os.py"}
+```
+
+#### `re`
+
+#### `pdb`
+
+#### `venv`
+
+
+```
+python -m venv my_venv
+```
+
+### Packages
+
+#### PIP
+
+#### NumPy
+
+#### Matplotlib
+
+#### Requests
+
+#### Custom
+
+
+
