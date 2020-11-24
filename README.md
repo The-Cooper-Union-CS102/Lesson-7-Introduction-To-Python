@@ -1161,13 +1161,13 @@ timed_wait(0.3)
 ```
 waiting
 done waiting!
-Calling "wait" took 0.10355091094970703 seconds
+Calling "wait" took 0.1001899242401123 seconds
 waiting
 done waiting!
-Calling "wait" took 0.20382285118103027 seconds
+Calling "wait" took 0.20316481590270996 seconds
 waiting
 done waiting!
-Calling "wait" took 0.3050539493560791 seconds
+Calling "wait" took 0.30135607719421387 seconds
 ```
 
 This is fairly common for some Python programs, so there is even a
@@ -1410,7 +1410,7 @@ foo = Foo()
 print(foo)
 ```
 ```
-<__main__.Foo object at 0x1018a7340>
+<__main__.Foo object at 0x10e0324f0>
 ```
 
 ### Methods
@@ -1677,6 +1677,7 @@ There are a ton of other magic methods that Python lets you override in your
 classes.  Here we will go over an example with a couple, but there are a lot
 more.
 
+
 ```python
 class Interval():
     def __init__(self, start, end):
@@ -1722,3 +1723,546 @@ True
 0
 False
 ```
+
+## Modules
+
+### Importing
+
+There are several ways to import code from another file.
+
+1. `import x`
+
+```python
+import pprint
+
+lst = [[(y, x) for x in range(5)] for y in range(5)]
+print(lst)
+pprint.pprint(lst)
+```
+```
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)], [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)], [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)], [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)], [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)],
+ [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)],
+ [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)],
+ [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)],
+ [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
+```
+
+In this case you will always be importing a module object, which you can then
+use by accessing its members
+
+2. `import x as y`
+
+```python
+import pprint as pp
+
+lst = [[(y, x) for x in range(5)] for y in range(5)]
+print(lst)
+pp.pprint(lst)
+
+```
+```
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)], [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)], [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)], [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)], [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)],
+ [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)],
+ [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)],
+ [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)],
+ [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
+```
+
+This is the same, except you can give it a new name.  This can be helpful if
+two custom modules happen to have the same name, or you want a shorter name.
+
+3. `from x import y`
+
+```python
+from pprint import pprint
+
+lst = [[(y, x) for x in range(5)] for y in range(5)]
+print(lst)
+pprint(lst)
+```
+```
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)], [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)], [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)], [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)], [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)],
+ [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)],
+ [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)],
+ [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)],
+ [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
+```
+
+This imports a specific thing (could be a variable, object, function, class,
+whatever) from the given module.
+
+4. `from x import y as z`
+
+```python
+from pprint import pprint as pp
+
+lst = [[(y, x) for x in range(5)] for y in range(5)]
+print(lst)
+pp(lst)
+
+```
+```
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)], [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)], [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)], [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)], [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
+[[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)],
+ [(1, 0), (1, 1), (1, 2), (1, 3), (1, 4)],
+ [(2, 0), (2, 1), (2, 2), (2, 3), (2, 4)],
+ [(3, 0), (3, 1), (3, 2), (3, 3), (3, 4)],
+ [(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]]
+```
+
+This does the same but gives it a new name.
+
+### Modules
+
+Look here for a full list of built in Python modules:
+`https://docs.python.org/3/py-modindex.html`
+
+Most modules are useuless to you, so we will go over some common and useful
+ones.
+
+#### `copy`
+
+```python
+import copy
+
+def append_one_in_place(lst):
+    lst.append(1)
+    return lst
+
+def append_one_to_copy(lst):
+    lst = copy.copy(lst)
+    lst.append(1)
+    return lst
+
+def append_one_to_first_elem(lst):
+    lst[0].append(1)
+    return lst
+
+a = [3, 2]
+b = append_one_in_place(a)
+print(a)
+print(b)
+
+a = [3, 2]
+b = append_one_to_copy(a)
+print(a)
+print(b)
+
+a = [[0]]
+b = append_one_to_first_elem(a)
+print(a)
+print(b)
+```
+```
+[3, 2, 1]
+[3, 2, 1]
+[3, 2]
+[3, 2, 1]
+[[0, 1]]
+[[0, 1]]
+```
+
+#### `math`
+
+```python
+import math
+
+print(math.ceil(0.3))
+print(math.comb(10, 3))
+print(math.factorial(100))
+print(math.gcd(7*11, 3*7))
+print(math.sqrt(2))
+print(math.prod(range(1,101)))
+print(math.log(math.exp(2)))
+```
+```
+1
+120
+93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+7
+1.4142135623730951
+93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+2.0
+```
+
+#### `random`
+
+```python
+import random
+
+between_1_and_10 = random.randint(1, 10)
+print(between_1_and_10)
+between_0_and_1 = random.uniform(0, 1)
+print(between_0_and_1)
+a_b_or_c = random.choice(['a', 'b', 'c'])
+print(a_b_or_c)
+```
+```
+4
+0.7022365653235338
+c
+```
+
+#### `collections`
+
+```python
+import collections
+import string
+import random
+
+rs = ''.join(random.choices(string.ascii_lowercase, k=1000))
+# Create a count of each unique element
+count = collections.Counter(rs)
+print(count.most_common())
+# You can access it like a dictionary
+print(count['z'])
+
+dd = collections.defaultdict(list)
+dd['new_key'].append(1)
+dd['new_key'].append(2)
+dd['new_key_2'].append(0)
+print(dict(dd))
+```
+```
+[('o', 48), ('n', 47), ('c', 47), ('v', 47), ('u', 45), ('l', 43), ('b', 42), ('h', 42), ('k', 42), ('w', 40), ('e', 39), ('p', 39), ('f', 39), ('a', 39), ('q', 39), ('y', 38), ('i', 37), ('z', 37), ('m', 36), ('r', 36), ('j', 36), ('s', 33), ('g', 33), ('d', 29), ('t', 24), ('x', 23)]
+37
+{'new_key': [1, 2], 'new_key_2': [0]}
+```
+
+#### `enum`
+
+```python
+import enum
+
+class Mode(enum.Enum):
+    READ = 1
+    WRITE = 2
+    EXECUTE = 3
+
+r = Mode.READ
+w = Mode.WRITE
+e = Mode.EXECUTE
+
+print(r, w, e)
+```
+```
+Mode.READ Mode.WRITE Mode.EXECUTE
+```
+
+#### `functools`
+
+```python
+import functools
+
+def add(a, b):
+    return a + b
+
+add_one = functools.partial(add, b=1)
+print(add_one(4))
+
+
+@functools.lru_cache(maxsize=128)
+def fib_cached(n):
+    if n in (0, 1):
+        return 1
+    else:
+        return fib_cached(n-1) + fib_cached(n-2)
+
+def fib(n):
+    if n in (0, 1):
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+
+print('running fib cached')
+print(fib_cached(100))
+print('running fib')
+print(fib(34))
+```
+```
+5
+running fib cached
+573147844013817084101
+running fib
+9227465
+```
+
+#### `heapq`
+
+```python
+import heapq
+
+h = []
+heapq.heappush(h, 2)
+heapq.heappush(h, 1)
+heapq.heappush(h, 3)
+heapq.heappush(h, -1)
+
+print(heapq.heappop(h))
+print(heapq.heappop(h))
+print(heapq.heappop(h))
+print(heapq.heappop(h))
+
+```
+```
+-1
+1
+2
+3
+```
+
+#### `itertools`
+
+```python
+import pprint
+import itertools
+
+pprint.pprint(list(itertools.product([0, 1, 2], [0, 1, 2])))
+pprint.pprint(list(itertools.product([0, 1, 2], repeat=3)))
+pprint.pprint(list(itertools.product(['a', 'b', 'c'], [1, 2, 3])))
+
+pprint.pprint(list(itertools.permutations('aabc')))
+pprint.pprint(list(itertools.combinations('aabc', 3)))
+```
+```
+[(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+[(0, 0, 0),
+ (0, 0, 1),
+ (0, 0, 2),
+ (0, 1, 0),
+ (0, 1, 1),
+ (0, 1, 2),
+ (0, 2, 0),
+ (0, 2, 1),
+ (0, 2, 2),
+ (1, 0, 0),
+ (1, 0, 1),
+ (1, 0, 2),
+ (1, 1, 0),
+ (1, 1, 1),
+ (1, 1, 2),
+ (1, 2, 0),
+ (1, 2, 1),
+ (1, 2, 2),
+ (2, 0, 0),
+ (2, 0, 1),
+ (2, 0, 2),
+ (2, 1, 0),
+ (2, 1, 1),
+ (2, 1, 2),
+ (2, 2, 0),
+ (2, 2, 1),
+ (2, 2, 2)]
+[('a', 1),
+ ('a', 2),
+ ('a', 3),
+ ('b', 1),
+ ('b', 2),
+ ('b', 3),
+ ('c', 1),
+ ('c', 2),
+ ('c', 3)]
+[('a', 'a', 'b', 'c'),
+ ('a', 'a', 'c', 'b'),
+ ('a', 'b', 'a', 'c'),
+ ('a', 'b', 'c', 'a'),
+ ('a', 'c', 'a', 'b'),
+ ('a', 'c', 'b', 'a'),
+ ('a', 'a', 'b', 'c'),
+ ('a', 'a', 'c', 'b'),
+ ('a', 'b', 'a', 'c'),
+ ('a', 'b', 'c', 'a'),
+ ('a', 'c', 'a', 'b'),
+ ('a', 'c', 'b', 'a'),
+ ('b', 'a', 'a', 'c'),
+ ('b', 'a', 'c', 'a'),
+ ('b', 'a', 'a', 'c'),
+ ('b', 'a', 'c', 'a'),
+ ('b', 'c', 'a', 'a'),
+ ('b', 'c', 'a', 'a'),
+ ('c', 'a', 'a', 'b'),
+ ('c', 'a', 'b', 'a'),
+ ('c', 'a', 'a', 'b'),
+ ('c', 'a', 'b', 'a'),
+ ('c', 'b', 'a', 'a'),
+ ('c', 'b', 'a', 'a')]
+[('a', 'a', 'b'), ('a', 'a', 'c'), ('a', 'b', 'c'), ('a', 'b', 'c')]
+```
+
+#### `json`
+
+```python
+import json
+
+lst = [
+    {'name': 'cory', 'grade': 80},
+    {'name': 'deborah', 'grade': 100},
+    {'name': 'ross', 'grade': 90},
+    {'name': 'gordon', 'grade': 85},
+]
+
+stringified = json.dumps(lst)
+
+print(lst)
+print(stringified)
+print(lst[0])
+print(stringified[0])
+
+objectified = json.loads(stringified)
+
+assert objectified == lst
+```
+```
+[{'name': 'cory', 'grade': 80}, {'name': 'deborah', 'grade': 100}, {'name': 'ross', 'grade': 90}, {'name': 'gordon', 'grade': 85}]
+[{"name": "cory", "grade": 80}, {"name": "deborah", "grade": 100}, {"name": "ross", "grade": 90}, {"name": "gordon", "grade": 85}]
+{'name': 'cory', 'grade': 80}
+[
+```
+
+#### `logging`
+
+```python
+import logging
+
+# This is the only way you should ever ever ever make a logger
+logger = logging.getLogger(__name__)
+
+# Will not print anything
+logger.info('Here is a an info log')
+logger.warning('Here is a warning log')
+
+log_format = '%(asctime)-15s %(message)s'
+logging.basicConfig(format=log_format, level=logging.INFO)
+
+# Will print something
+logger.info('Here is a an info log')
+```
+```
+Here is a warning log
+2020-11-24 17:42:02,614 Here is a an info log
+```
+
+#### `os`
+
+```python
+import os
+
+files = os.listdir('.')
+
+print(files)
+print(os.getenv('HOME'))
+```
+```
+['alias_import.py', 'snippets', 'from_alias_import.py', '.raw.md.swp', 'my_heapq.py', 'my_os.py', 'my_matplotlib.py', 'my_copy.py', 'my_functools.py', 'apply.c', 'from_import.py', 'output.md', 'notify.py', '__pycache__', 'test.py', 'my_numpy.py', 'README.md', 'my_itertools.py', 'raw.md', 'a.out', '.gitignore', 'test.cc', 'my_matplot.py', 'simple_import.py', 'my_re.py', 'my_random.py', 'my_json.py', 'my_logging.py', 'venv', '.git', 'backup', 'destructor', 'my_math.py', 'my_enum.py', 'output.txt', "'", 'my_requests.py', 'my_collections.py']
+/Users/cnezin
+```
+
+#### `re`
+
+```python
+import re
+
+pattern = ' [0-9].[0-9][0-9] '
+string = '$123.0 1.23 12.23'
+matches = list(re.finditer(pattern, string))
+print(matches)
+
+pattern = '[0-9]'
+string = '$123.0 1.23 12.23'
+new_string = re.sub(pattern, '#', string)
+print(new_string)
+
+pattern = '^[a-zA-Z]+ [a-zA-Z]+$'
+print(re.match(pattern, 'Cory Charles Nezin'))
+print(re.match(pattern, 'Cory Nezin'))
+```
+```
+[<re.Match object; span=(6, 12), match=' 1.23 '>]
+$###.# #.## ##.##
+None
+<re.Match object; span=(0, 10), match='Cory Nezin'>
+```
+
+#### `pdb`
+
+```
+import pdb; pdb.set_trace()
+```
+
+#### `venv`
+
+```
+python -m venv my_venv
+```
+
+### Packages
+
+#### PIP
+
+You can install other people's code by using `pip`
+
+#### NumPy
+
+```
+python -m pip install numpy
+```
+
+```python
+import numpy as np
+
+A = np.arange(12).reshape(4,3)
+B = np.arange(12).reshape(3,4)
+
+prod = A.dot(B)
+
+print(prod)
+```
+```
+[[ 20  23  26  29]
+ [ 56  68  80  92]
+ [ 92 113 134 155]
+ [128 158 188 218]]
+```
+
+#### Matplotlib
+
+```
+python -m pip install matplotlib
+```
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Time from 0s to 5s in 0.2s intervals
+t = np.arange(0.0, 5.0, 0.2)
+plt.plot(t, t, 'r--', t, t**2, 'b--', t, t**3, 'g--')
+plt.show()
+```
+```
+```
+
+#### Requests
+
+```
+python -m pip install requests
+```
+
+```python
+import requests
+
+resp = requests.get('http://google.com')
+
+print(resp.content)
+```
+```
+b'<!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="en"><head><meta content="Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for." name="description"><meta content="noodp" name="robots"><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><meta content="/logos/doodles/2020/celebrating-mariachi-5179094491725824.2-l.png" itemprop="image"><meta content="Celebrating Mariachi" property="twitter:title"><meta content="Celebrating Mariachi! #GoogleDoodle" property="twitter:description"><meta content="Celebrating Mariachi! #GoogleDoodle" property="og:description"><meta content="summary_large_image" property="twitter:card"><meta content="@GoogleDoodles" property="twitter:site"><meta content="https://www.google.com/logos/doodles/2020/celebrating-mariachi-5179094491725824.2-2xa.gif" property="twitter:image"><meta content="https://www.google.com/logos/doodles/2020/celebrating-mariachi-5179094491725824.2-2xa.gif" property="og:image"><meta content="1000" property="og:image:width"><meta content="360" property="og:image:height"><meta content="https://www.google.com/logos/doodles/2020/celebrating-mariachi-5179094491725824.2-2xa.gif" property="og:url"><meta content="video.other" property="og:type"><title>Google</title><script nonce="L+Pza1mUTNVe40pc7kOh7Q==">(function(){window.google={kEI:\'PYy9X4aaOPyy5NoP_sC42AY\',kEXPI:\'0,202162,1157247,730,224,5105,206,3204,10,1226,364,1499,817,383,246,5,1354,223,425,3452,314,3,66,453,315,216,271,2,11,977,864,7,2983,7,1875,132,1115170,1197695,587,7,328978,13677,4855,32691,16115,6057,22627,9188,8384,4859,1361,9290,3023,4745,11033,1808,4020,978,7931,5297,2054,920,873,4192,6430,1142,13386,4516,1397,1381,919,2277,8,2796,885,708,1279,2212,530,149,1103,840,517,1466,56,158,4100,108,204,1135,1,3,2063,606,2025,1775,143,377,1947,2229,93,328,1284,24,2919,2247,1812,1787,3227,2845,9,4772,7580,4455,641,7539,337,4929,108,2855,552,908,2,941,5011,1027,6443,1,2842,432,3,1546,44,1,820,1,4624,148,3027,2963,7985,4,1141,387,2304,217,1019,271,561,313,405,1458,402,2393,74,463,42,1212,266,1107,1056,17,446,460,1555,4067,2351,3,3280,1426,69,305,2310,1514,603,1,694,1752,2658,239,633,3370,519,912,564,213,907,30,1303,981,423,1147,139,3094,990,52,3030,255,2214,850,1236,219,638,37,629,828,130,475,2,567,1008,1794,7,3,250,1023,8,319,631,2,1115,613,55,745,611,3226,1659,59,260,230,559,28,11,731,64,601,337,1808,1519,249,2,772,1143,127,1945,54,205,144,52,308,171,514,639,113,2,299,849,58,494,4,280,7,81,252,4,19,17,19,241,113,83,887,20,1,29,70,590,31,1037,6,904,3,111,56,39,387,2,3,2,2,344,371,214,913,427,658,16,1,613,74,119,116,25,2,93,2,381,94,318,168,313,267,484,848,214,43,776,341,289,346,581,18,72,2,437,816,955,16,841,625,4,2,7,172,401,7,12,3,207,233,834,2,5,2,8,82,81,380,3,57,483,1287,5728854,1874,1920,68,8798054,549,333,444,1,2,80,1,900,896,1,9,2,2551,1,748,141,59,736,563,1,4265,1,1,2,1017,9,305,3299,248,595,1,1336,541,1,113,23,9,3,11,2,1,58,84,32,23958047,2700441,15696,24565,1595\',kBL:\'9-0U\'};google.sn=\'webhp\';google.kHL=\'en\';})();(function(){google.lc=[];google.li=0;google.getEI=function(a){for(var c;a&&(!a.getAttribute||!(c=a.getAttribute("eid")));)a=a.parentNode;return c||google.kEI};google.getLEI=function(a){for(var c=null;a&&(!a.getAttribute||!(c=a.getAttribute("leid")));)a=a.parentNode;return c};google.ml=function(){return null};google.time=function(){return Date.now()};google.log=function(a,c,b,d,g){if(b=google.logUrl(a,c,b,d,g)){a=new Image;var e=google.lc,f=google.li;e[f]=a;a.onerror=a.onload=a.onabort=function(){delete e[f]};google.vel&&google.vel.lu&&google.vel.lu(b);a.src=b;google.li=f+1}};google.logUrl=function(a,c,b,d,g){var e="",f=google.ls||"";b||-1!=c.search("&ei=")||(e="&ei="+google.getEI(d),-1==c.search("&lei=")&&(d=google.getLEI(d))&&(e+="&lei="+d));d="";!b&&google.cshid&&-1==c.search("&cshid=")&&"slh"!=a&&(d="&cshid="+google.cshid);b=b||"/"+(g||"gen_204")+"?atyp=i&ct="+a+"&cad="+c+e+f+"&zx="+google.time()+d;/^http:/i.test(b)&&"https:"==window.location.protocol&&(google.ml(Error("a"),!1,{src:b,glmm:1}),b="");return b};}).call(this);(function(){google.y={};google.x=function(a,b){if(a)var c=a.id;else{do c=Math.random();while(google.y[c])}google.y[c]=[a,b];return!1};google.lm=[];google.plm=function(a){google.lm.push.apply(google.lm,a)};google.lq=[];google.load=function(a,b,c){google.lq.push([[a],b,c])};google.loadAll=function(a,b){google.lq.push([a,b])};}).call(this);google.f={};(function(){\ndocument.documentElement.addEventListener("submit",function(b){var a;if(a=b.target){var c=a.getAttribute("data-submitfalse");a="1"==c||"q"==c&&!a.elements.q.value?!0:!1}else a=!1;a&&(b.preventDefault(),b.stopPropagation())},!0);document.documentElement.addEventListener("click",function(b){var a;a:{for(a=b.target;a&&a!=document.documentElement;a=a.parentElement)if("A"==a.tagName){a="1"==a.getAttribute("data-nohref");break a}a=!1}a&&b.preventDefault()},!0);}).call(this);\nvar a=window.location,b=a.href.indexOf("#");if(0<=b){var c=a.href.substring(b+1);/(^|&)q=/.test(c)&&-1==c.indexOf("#")&&a.replace("/search?"+c.replace(/(^|&)fp=[^&]*/g,"")+"&cad=h")};</script><style>#gbar,#guser{font-size:13px;padding-top:1px !important;}#gbar{height:22px}#guser{padding-bottom:7px !important;text-align:right}.gbh,.gbd{border-top:1px solid #c9d7f1;font-size:1px}.gbh{height:0;position:absolute;top:24px;width:100%}@media all{.gb1{height:22px;margin-right:.5em;vertical-align:top}#gbar{float:left}}a.gb1,a.gb4{text-decoration:underline !important}a.gb1,a.gb4{color:#00c !important}.gbi .gb4{color:#dd8e27 !important}.gbf .gb4{color:#900 !important}\n</style><style>body,td,a,p,.h{font-family:arial,sans-serif}body{margin:0;overflow-y:scroll}#gog{padding:3px 8px 0}td{line-height:.8em}.gac_m td{line-height:17px}form{margin-bottom:20px}.h{color:#1558d6}em{font-weight:bold;font-style:normal}.lst{height:25px;width:496px}.gsfi,.lst{font:18px arial,sans-serif}.gsfs{font:17px arial,sans-serif}.ds{display:inline-box;display:inline-block;margin:3px 0 4px;margin-left:4px}input{font-family:inherit}body{background:#fff;color:#000}a{color:#4b11a8;text-decoration:none}a:hover,a:active{text-decoration:underline}.fl a{color:#1558d6}a:visited{color:#4b11a8}.sblc{padding-top:5px}.sblc a{display:block;margin:2px 0;margin-left:13px;font-size:11px}.lsbb{background:#f8f9fa;border:solid 1px;border-color:#dadce0 #70757a #70757a #dadce0;height:30px}.lsbb{display:block}#WqQANb a{display:inline-block;margin:0 12px}.lsb{background:url(/images/nav_logo229.png) 0 -261px repeat-x;border:none;color:#000;cursor:pointer;height:30px;margin:0;outline:0;font:15px arial,sans-serif;vertical-align:top}.lsb:active{background:#dadce0}.lst:focus{outline:none}</style><script nonce="L+Pza1mUTNVe40pc7kOh7Q=="></script></head><body bgcolor="#fff"><script nonce="L+Pza1mUTNVe40pc7kOh7Q==">(function(){var src=\'/images/nav_logo229.png\';var iesg=false;document.body.onload = function(){window.n && window.n();if (document.images){new Image().src=src;}\nif (!iesg){document.f&&document.f.q.focus();document.gbqf&&document.gbqf.q.focus();}\n}\n})();</script><div id="mngb"><div id=gbar><nobr><b class=gb1>Search</b> <a class=gb1 href="http://www.google.com/imghp?hl=en&tab=wi">Images</a> <a class=gb1 href="http://maps.google.com/maps?hl=en&tab=wl">Maps</a> <a class=gb1 href="https://play.google.com/?hl=en&tab=w8">Play</a> <a class=gb1 href="http://www.youtube.com/?gl=US&tab=w1">YouTube</a> <a class=gb1 href="https://news.google.com/?tab=wn">News</a> <a class=gb1 href="https://mail.google.com/mail/?tab=wm">Gmail</a> <a class=gb1 href="https://drive.google.com/?tab=wo">Drive</a> <a class=gb1 style="text-decoration:none" href="https://www.google.com/intl/en/about/products?tab=wh"><u>More</u> &raquo;</a></nobr></div><div id=guser width=100%><nobr><span id=gbn class=gbi></span><span id=gbf class=gbf></span><span id=gbe></span><a href="http://www.google.com/history/optout?hl=en" class=gb4>Web History</a> | <a  href="/preferences?hl=en" class=gb4>Settings</a> | <a target=_top id=gb_70 href="https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=http://www.google.com/&ec=GAZAAQ" class=gb4>Sign in</a></nobr></div><div class=gbh style=left:0></div><div class=gbh style=right:0></div></div><center><br clear="all" id="lgpd"><div id="lga"><a href="/search?ie=UTF-8&amp;q=Mariachi&amp;oi=ddle&amp;ct=122613201&amp;hl=en&amp;kgmid=/m/01_qs1&amp;sa=X&amp;ved=0ahUKEwjGrK-poJztAhV8GVkFHX4gDmsQPQgD"><img alt="Celebrating Mariachi" border="0" height="180" src="/logos/doodles/2020/celebrating-mariachi-5179094491725824.2-l.png" title="Celebrating Mariachi" width="500" id="hplogo"><br></a><br></div><form action="/search" name="f"><table cellpadding="0" cellspacing="0"><tr valign="top"><td width="25%">&nbsp;</td><td align="center" nowrap=""><input name="ie" value="ISO-8859-1" type="hidden"><input value="en" name="hl" type="hidden"><input name="source" type="hidden" value="hp"><input name="biw" type="hidden"><input name="bih" type="hidden"><div class="ds" style="height:32px;margin:4px 0"><input class="lst" style="margin:0;padding:5px 8px 0 6px;vertical-align:top;color:#000" autocomplete="off" value="" title="Google Search" maxlength="2048" name="q" size="57"></div><br style="line-height:0"><span class="ds"><span class="lsbb"><input class="lsb" value="Google Search" name="btnG" type="submit"></span></span><span class="ds"><span class="lsbb"><input class="lsb" id="tsuid1" value="I\'m Feeling Lucky" name="btnI" type="submit"><script nonce="L+Pza1mUTNVe40pc7kOh7Q==">(function(){var id=\'tsuid1\';document.getElementById(id).onclick = function(){if (this.form.q.value){this.checked = 1;if (this.form.iflsig)this.form.iflsig.disabled = false;}\nelse top.location=\'/doodles/\';};})();</script><input value="AINFCbYAAAAAX72aTfZEB6SxOVJJF1UILCj_c1WrD9O-" name="iflsig" type="hidden"></span></span></td><td class="fl sblc" align="left" nowrap="" width="25%"><a href="/advanced_search?hl=en&amp;authuser=0">Advanced search</a></td></tr></table><input id="gbv" name="gbv" type="hidden" value="1"><script nonce="L+Pza1mUTNVe40pc7kOh7Q==">(function(){var a,b="1";if(document&&document.getElementById)if("undefined"!=typeof XMLHttpRequest)b="2";else if("undefined"!=typeof ActiveXObject){var c,d,e=["MSXML2.XMLHTTP.6.0","MSXML2.XMLHTTP.3.0","MSXML2.XMLHTTP","Microsoft.XMLHTTP"];for(c=0;d=e[c++];)try{new ActiveXObject(d),b="2"}catch(h){}}a=b;if("2"==a&&-1==location.search.indexOf("&gbv=2")){var f=google.gbvu,g=document.getElementById("gbv");g&&(g.value=a);f&&window.setTimeout(function(){location.href=f},0)};}).call(this);</script></form><div id="gac_scont"></div><div style="font-size:83%;min-height:3.5em"><br><div id="prm"><style>.szppmdbYutt__middle-slot-promo{font-size:small;margin-bottom:32px}.szppmdbYutt__middle-slot-promo a.ZIeIlb{display:inline-block;text-decoration:none}.szppmdbYutt__middle-slot-promo img{border:none;margin-right:5px;vertical-align:middle}</style><div class="szppmdbYutt__middle-slot-promo" data-ved="0ahUKEwjGrK-poJztAhV8GVkFHX4gDmsQnIcBCAQ"><a class="NKcBbd" href="https://www.google.com/url?q=https://blog.google/technology/health/thanksgiving-covid-19&amp;source=hpp&amp;id=19021974&amp;ct=3&amp;usg=AFQjCNHe98pJD8UHuvA194EOc0iidOmOkQ&amp;sa=X&amp;ved=0ahUKEwjGrK-poJztAhV8GVkFHX4gDmsQ8IcBCAU" rel="nofollow">Stay home and celebrate safely this Thanksgiving</a></div></div></div><span id="footer"><div style="font-size:10pt"><div style="margin:19px auto;text-align:center" id="WqQANb"><a href="/intl/en/ads/">Advertising\xa0Programs</a><a href="/services/">Business Solutions</a><a href="/intl/en/about.html">About Google</a></div></div><p style="font-size:8pt;color:#70757a">&copy; 2020 - <a href="/intl/en/policies/privacy/">Privacy</a> - <a href="/intl/en/policies/terms/">Terms</a></p></span></center><script nonce="L+Pza1mUTNVe40pc7kOh7Q==">(function(){window.google.cdo={height:0,width:0};(function(){var a=window.innerWidth,b=window.innerHeight;if(!a||!b){var c=window.document,d="CSS1Compat"==c.compatMode?c.documentElement:c.body;a=d.clientWidth;b=d.clientHeight}a&&b&&(a!=google.cdo.width||b!=google.cdo.height)&&google.log("","","/client_204?&atyp=i&biw="+a+"&bih="+b+"&ei="+google.kEI);}).call(this);})();(function(){var u=\'/xjs/_/js/k\\x3dxjs.hp.en_US.4ujpxiJTrmg.O/m\\x3dsb_he,d/am\\x3dADxBHA/d\\x3d1/rs\\x3dACT90oEyYaVazdQI1pK0vdLhB-jfLPgWTw\';\nvar c=this||self,e=/^[\\w+/_-]+[=]{0,2}$/,f=null,g=function(a){return(a=a.querySelector&&a.querySelector("script[nonce]"))&&(a=a.nonce||a.getAttribute("nonce"))&&e.test(a)?a:""},h=function(a){return a};var l;var n=function(a,b){this.a=b===m?a:""},m={};setTimeout(function(){var a=document;var b="SCRIPT";"application/xhtml+xml"===a.contentType&&(b=b.toLowerCase());b=a.createElement(b);a=u;if(void 0===l){var d=null;var k=c.trustedTypes;if(k&&k.createPolicy){try{d=k.createPolicy("goog#html",{createHTML:h,createScript:h,createScriptURL:h})}catch(p){c.console&&c.console.error(p.message)}l=d}else l=d}a=(d=l)?d.createScriptURL(a):a;a=new n(a,m);b.src=a instanceof n&&a.constructor===n?a.a:"type_error:TrustedResourceUrl";(a=b.ownerDocument&&b.ownerDocument.defaultView)&&\na!=c?a=g(a.document):(null===f&&(f=g(c.document)),a=f);a&&b.setAttribute("nonce",a);google.timers&&google.timers.load&&google.tick&&google.tick("load","xjsls");document.body.appendChild(b)},0);})();(function(){window.google.xjsu=\'/xjs/_/js/k\\x3dxjs.hp.en_US.4ujpxiJTrmg.O/m\\x3dsb_he,d/am\\x3dADxBHA/d\\x3d1/rs\\x3dACT90oEyYaVazdQI1pK0vdLhB-jfLPgWTw\';})();function _DumpException(e){throw e;}\nfunction _F_installCss(c){}\n(function(){google.jl={dw:false,em:[],emw:false,lls:\'default\',pdt:0,snet:true,uwp:true};})();(function(){var pmc=\'{\\x22d\\x22:{},\\x22sb_he\\x22:{\\x22agen\\x22:false,\\x22cgen\\x22:false,\\x22client\\x22:\\x22heirloom-hp\\x22,\\x22dh\\x22:true,\\x22dhqt\\x22:true,\\x22ds\\x22:\\x22\\x22,\\x22ffql\\x22:\\x22en\\x22,\\x22fl\\x22:true,\\x22host\\x22:\\x22google.com\\x22,\\x22isbh\\x22:28,\\x22jsonp\\x22:true,\\x22msgs\\x22:{\\x22cibl\\x22:\\x22Clear Search\\x22,\\x22dym\\x22:\\x22Did you mean:\\x22,\\x22lcky\\x22:\\x22I\\\\u0026#39;m Feeling Lucky\\x22,\\x22lml\\x22:\\x22Learn more\\x22,\\x22oskt\\x22:\\x22Input tools\\x22,\\x22psrc\\x22:\\x22This search was removed from your \\\\u003Ca href\\x3d\\\\\\x22/history\\\\\\x22\\\\u003EWeb History\\\\u003C/a\\\\u003E\\x22,\\x22psrl\\x22:\\x22Remove\\x22,\\x22sbit\\x22:\\x22Search by image\\x22,\\x22srch\\x22:\\x22Google Search\\x22},\\x22nrft\\x22:false,\\x22ovr\\x22:{},\\x22pq\\x22:\\x22\\x22,\\x22refpd\\x22:true,\\x22rfs\\x22:[],\\x22sbas\\x22:\\x220 3px 8px 0 rgba(0,0,0,0.2),0 0 0 1px rgba(0,0,0,0.08)\\x22,\\x22sbpl\\x22:16,\\x22sbpr\\x22:16,\\x22scd\\x22:10,\\x22stok\\x22:\\x22aB2Mb2O8hAsTCJN8gTOu1TO5u1M\\x22,\\x22uhde\\x22:false}}\';google.pmc=JSON.parse(pmc);})();</script>        </body></html>'
+```
+
+#### Custom
+
+
+

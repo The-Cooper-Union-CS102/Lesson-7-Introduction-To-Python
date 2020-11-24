@@ -89,7 +89,7 @@ Also, unlike C strings, Python strings are **immutable**.  This means once
 you create a string, you cannot change it.
 
 ```snippet
-{"code": "snippets/string.py"}
+{"code": "snippets/my_string.py"}
 ```
 
 Formatting strings is way easier in Python.  Here are some different
@@ -899,7 +899,7 @@ ones.
 #### `logging`
 
 ```snippet
-{"code": "snippets/my_json.py"}
+{"code": "snippets/my_logging.py"}
 ```
 
 #### `os`
@@ -910,10 +910,17 @@ ones.
 
 #### `re`
 
+```snippet
+{"code": "snippets/my_re.py"}
+```
+
 #### `pdb`
 
-#### `venv`
+```
+import pdb; pdb.set_trace()
+```
 
+#### `venv`
 
 ```
 python -m venv my_venv
@@ -923,11 +930,37 @@ python -m venv my_venv
 
 #### PIP
 
+You can install other people's code by using `pip`
+
 #### NumPy
+
+```
+python -m pip install numpy
+```
+
+```snippet
+{"code": "snippets/my_numpy.py"}
+```
 
 #### Matplotlib
 
+```
+python -m pip install matplotlib
+```
+
+```snippet
+{"code": "snippets/my_matplotlib.py"}
+```
+
 #### Requests
+
+```
+python -m pip install requests
+```
+
+```snippet
+{"code": "snippets/my_requests.py"}
+```
 
 #### Custom
 
